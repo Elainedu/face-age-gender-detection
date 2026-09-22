@@ -1,0 +1,6 @@
+path: .
+train: images/train_balanced
+val: images/val_balanced
+
+nc: 10
+names: ['male0-20','male21-40','male41-60','male61-80','male81~','female0-20','female21-40','female41-60','female61-80','female81~']

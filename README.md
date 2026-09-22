@@ -311,3 +311,29 @@ Released for educational use as part of a deep learning course project.
 - **YOLOv8 / Ultralytics**: AGPL-3.0 (see the upstream repo).
 - **IMDB-WIKI dataset**: research-only license from ETH Zurich. Download
   from the original site and respect its terms.
+
+---
+
+## Alternative Approach — Two-Stage Pipeline
+
+The `two-stage-approach/` subfolder holds an alternative implementation that
+was previously in a standalone repo (`dl-project2-yolov8-detection`, merged
+here 2026-09-22). It uses a **two-stage** pipeline:
+
+1. **Stage 1** — `yolov8n.pt` (COCO pretrained, class 0 person only, conf ≥ 0.30)
+   is used purely as a face/person locator.
+2. **Stage 2** — a separately-retrained YOLOv8m/n (via `train.py` /
+   `train_balanced.py`) classifies each detection into 10 age×gender classes
+   at 640×640.
+
+Compared to the **single-stage** approach in the root of this repo (a single
+YOLOv8m retrained end-to-end for 10 classes on IMDB-WIKI face chips), the
+two-stage version:
+
+- Reuses COCO-pretrained person detection (better recall in cluttered scenes)
+- Trains a smaller classification head only, so the age/gender step converges
+  faster and needs less data.
+- Slightly higher latency at inference (two forward passes).
+
+See `two-stage-approach/README.md` for its own detailed docs, and
+`two-stage-approach/YoloV8/` for training / demo scripts.
